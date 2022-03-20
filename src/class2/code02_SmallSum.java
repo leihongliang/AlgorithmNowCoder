@@ -22,9 +22,10 @@ public class code02_SmallSum {
         int[] help = new int[r - l + 1];
         int i = 0, p1 = l, p2 = m + 1, res = 0;
         while (p1 <= m && p2 <= r) {
-            //并入的时候，利用有序性
-            //eg.134和25,由1<2,推出2后面的数都>1,故直接(r-indexOf(2)+1)*1
-            //因为排好序，直接相减就能得出有多少个数比p1大
+            // 并入的时候，利用有序性
+            // eg.134和25,由1<2,推出2后面的数都>1,故直接(r-indexOf(2)+1)*1
+            // 因为排好序，直接相减就能得出有多少个数比p1大
+            // 左边比右边小才拷贝进小和
             res += arr[p1] < arr[p2] ? (r - p2 + 1) * arr[p1] : 0;
             help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
         }
@@ -42,6 +43,7 @@ public class code02_SmallSum {
 
     public static void main(String[] args) {
         int[] arr = {1,3,4,2,5};
-        System.out.println(smallSum(arr));
+        int smallSum = smallSum(arr);
+        System.out.println(smallSum);
     }
 }
