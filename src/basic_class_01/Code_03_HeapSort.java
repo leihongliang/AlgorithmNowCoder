@@ -8,9 +8,13 @@ public class Code_03_HeapSort {
 		if (arr == null || arr.length < 2) {
 			return;
 		}
-		for (int i = 0; i < arr.length; i++) {
-			heapInsert(arr, i);
+//		for (int i = 0; i < arr.length; i++) {
+//			heapInsert(arr, i);
+//		}
+		for (int i = arr.length -1; i >=0; i--){
+			heapify(arr, i, arr.length);
 		}
+
 		int size = arr.length;
 		swap(arr, 0, --size);
 		while (size > 0) {
@@ -26,10 +30,21 @@ public class Code_03_HeapSort {
 		}
 	}
 
-	public static void heapify(int[] arr, int index, int size) {
+	/**
+	 *
+	 * @param arr
+	 * @param index 任何一个位置开始heapify
+	 * @param heapSize 判断是否有子节点
+	 */
+	public static void heapify(int[] arr, int index, int heapSize) {
+		// 左孩子下标
 		int left = index * 2 + 1;
-		while (left < size) {
-			int largest = left + 1 < size && arr[left + 1] > arr[left] ? left + 1 : left;
+		while (left < heapSize) {//下方还有孩子的时候
+			// 选出左右节点的最大值
+			// 有 右子树，且 右子树大于左孩子，则右孩子胜出，下标给largest
+			// 没有 右子树，或者 右子树小于左孩子，则左孩子胜出，下标给largest
+			int largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;
+			// 和父节点比较
 			largest = arr[largest] > arr[index] ? largest : index;
 			if (largest == index) {
 				break;

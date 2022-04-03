@@ -1,43 +1,58 @@
-package basic_class_01;
+package class_exe.exe03;
 
 import java.util.Arrays;
 
-public class Code_04_QuickSort {
+public class Code_03_HeapSort {
 
-	public static void quickSort(int[] arr) {
+	public static void heapSort(int[] arr) {
 		if (arr == null || arr.length < 2) {
 			return;
 		}
-		quickSort(arr, 0, arr.length - 1);
+//		for (int i = 0; i < arr.length; i++) {
+//			heapInsert(arr, i);
+//		}
+		for (int i = arr.length -1; i >=0; i--){
+			heapify(arr, i, arr.length);
+		}
+
+		int size = arr.length;
+		swap(arr, 0, --size);
+		while (size > 0) {
+			heapify(arr, 0, size);
+			swap(arr, 0, --size);
+		}
 	}
 
-	public static void quickSort(int[] arr, int l, int r) {
-		if (l < r) {
-			// 随机选择一个数和最后一个数做交换
-			swap(arr, l + (int) (Math.random() * (r - l + 1)), r);
-			int[] p = partition(arr, l, r);
-			quickSort(arr, l, p[0] - 1);//< 区域
-			quickSort(arr, p[1] + 1, r);//> 区域
+	public static void heapInsert(int[] arr, int index) {
+		while (arr[index] > arr[(index - 1) / 2]) {
+			swap(arr, index, (index - 1) / 2);
+			index = (index - 1) / 2;
 		}
 	}
 
 	/**
-	 * @return 等与区域的左边界和右边界
+	 *
+	 * @param arr
+	 * @param index 任何一个位置开始heapify
+	 * @param heapSize 判断是否有子节点
 	 */
-	public static int[] partition(int[] arr, int l, int r) {
-		int less = l - 1;
-		int more = r;
-		while (l < more) {
-			if (arr[l] < arr[r]) {
-				swap(arr, ++less, l++);
-			} else if (arr[l] > arr[r]) {
-				swap(arr, --more, l);
-			} else {
-				l++;
+	public static void heapify(int[] arr, int index, int heapSize) {
+		// 左孩子下标
+		int left = index * 2 + 1;
+		while (left < heapSize) {//下方还有孩子的时候
+			// 选出左右节点的最大值
+			// 有 右子树，且 右子树大于左孩子，则右孩子胜出，下标给largest
+			// 没有 右子树，或者 右子树小于左孩子，则左孩子胜出，下标给largest
+			int largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;
+			// 和父节点比较
+			largest = arr[largest] > arr[index] ? largest : index;
+			if (largest == index) {
+				break;
 			}
+			swap(arr, largest, index);
+			index = largest;
+			left = index * 2 + 1;
 		}
-		swap(arr, more, r);
-		return new int[] { less + 1, more };
 	}
 
 	public static void swap(int[] arr, int i, int j) {
@@ -111,12 +126,10 @@ public class Code_04_QuickSort {
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			quickSort(arr1);
+			heapSort(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;
-				printArray(arr1);
-				printArray(arr2);
 				break;
 			}
 		}
@@ -124,9 +137,8 @@ public class Code_04_QuickSort {
 
 		int[] arr = generateRandomArray(maxSize, maxValue);
 		printArray(arr);
-		quickSort(arr);
+		heapSort(arr);
 		printArray(arr);
-
 	}
 
 }

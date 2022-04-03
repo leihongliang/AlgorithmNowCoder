@@ -1,4 +1,4 @@
-package basic_class_01;
+package class_exe.exe02;
 
 import java.util.Arrays;
 

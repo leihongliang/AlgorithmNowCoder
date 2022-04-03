@@ -1,4 +1,4 @@
-package class2;
+package class_exe.exe02;
 
 
 import org.junit.Test;

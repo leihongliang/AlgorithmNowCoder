@@ -19,10 +19,11 @@ public class Code_09_Comparator {
 
 	public static class IdAscendingComparator implements Comparator<Student> {
 
-		@Override
-		public int compare(Student o1, Student o2) {
-			return o1.id - o2.id;
-		}
+			@Override
+			// 负数：第一个数在前
+			public int compare(Student o1, Student o2) {
+				return o1.id - o2.id;
+			}
 
 	}
 
@@ -30,7 +31,7 @@ public class Code_09_Comparator {
 
 		@Override
 		public int compare(Student o1, Student o2) {
-			return o2.id - o1.id;
+			return o2.id - o1.id;//
 		}
 
 	}

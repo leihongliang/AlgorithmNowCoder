@@ -1,4 +1,4 @@
-package class2;
+package class_exe.exe02;
 
 public class code02_SmallSum {
     public static int smallSum(int[] arr) {
