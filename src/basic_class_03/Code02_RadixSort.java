@@ -1,8 +1,8 @@
-package basic_class_01;
+package basic_class_03;
 
 import java.util.Arrays;
 
-public class Code_07_RadixSort {
+public class Code02_RadixSort {
 
 	// only for no-negative value
 	public static void radixSort(int[] arr) {
@@ -12,9 +12,6 @@ public class Code_07_RadixSort {
 		radixSort(arr, 0, arr.length - 1, maxbits(arr));
 	}
 
-	/**
-	 * @return 最大值有几个十进制位
-	 */
 	public static int maxbits(int[] arr) {
 		int max = Integer.MIN_VALUE;
 		for (int i = 0; i < arr.length; i++) {
@@ -28,38 +25,32 @@ public class Code_07_RadixSort {
 		return res;
 	}
 
-	/**
-	 *
-	 * @param arr
-	 * @param begin
-	 * @param end
-	 * @param digit 最大值有几个十进制位
-	 */
-	public static void radixSort(int[] arr, int begin, int end, int digit) {
+	// arr[begin..end]排序
+	public static void radixSort(int[] arr, int L, int R, int digit) {
 		final int radix = 10;
 		int i = 0, j = 0;
-		int[] count = new int[radix];
-		int[] bucket = new int[end - begin + 1];
-		// 从个位开始往上分类
-		for (int d = 1; d <= digit; d++) {//有多少个十进制位就入桶出桶几次
-			// count数组用来统计每个基数 的个数
-			for (i = 0; i < radix; i++) {
-				count[i] = 0;
-			}
-			for (i = begin; i <= end; i++) {
+		// 有多少个数准备多少个辅助空间
+		int[] bucket = new int[R - L + 1];
+		for (int d = 1; d <= digit; d++) { // 有多少位就进出几次
+			// 10个空间
+		    // count[0] 当前位(d位)是0的数字有多少个
+			// count[1] 当前位(d位)是(0和1)的数字有多少个
+			// count[2] 当前位(d位)是(0、1和2)的数字有多少个
+			// count[i] 当前位(d位)是(0~i)的数字有多少个
+			int[] count = new int[radix]; // count[0..9]
+			for (i = L; i <= R; i++) {
 				j = getDigit(arr[i], d);
 				count[j]++;
 			}
-			//【索引】小于等于i的值有多少 用来决定每个数字放在哪
 			for (i = 1; i < radix; i++) {
 				count[i] = count[i] + count[i - 1];
 			}
-			for (i = end; i >= begin; i--) {
+			for (i = R; i >= L; i--) {
 				j = getDigit(arr[i], d);
 				bucket[count[j] - 1] = arr[i];
 				count[j]--;
 			}
-			for (i = begin, j = 0; i <= end; i++, j++) {
+			for (i = L, j = 0; i <= R; i++, j++) {
 				arr[i] = bucket[j];
 			}
 		}
@@ -127,32 +118,28 @@ public class Code_07_RadixSort {
 
 	// for test
 	public static void main(String[] args) {
-//		int testTime = 500000;
-//		int maxSize = 100;
-//		int maxValue = 100000;
-//		boolean succeed = true;
-//		for (int i = 0; i < testTime; i++) {
-//			int[] arr1 = generateRandomArray(maxSize, maxValue);
-//			int[] arr2 = copyArray(arr1);
-//			radixSort(arr1);
-//			comparator(arr2);
-//			if (!isEqual(arr1, arr2)) {
-//				succeed = false;
-//				printArray(arr1);
-//				printArray(arr2);
-//				break;
-//			}
-//		}
-//		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
-//
-//		int[] arr = generateRandomArray(maxSize, maxValue);
-//		printArray(arr);
-//		radixSort(arr);
-//		printArray(arr);
+		int testTime = 500000;
+		int maxSize = 100;
+		int maxValue = 100000;
+		boolean succeed = true;
+		for (int i = 0; i < testTime; i++) {
+			int[] arr1 = generateRandomArray(maxSize, maxValue);
+			int[] arr2 = copyArray(arr1);
+			radixSort(arr1);
+			comparator(arr2);
+			if (!isEqual(arr1, arr2)) {
+				succeed = false;
+				printArray(arr1);
+				printArray(arr2);
+				break;
+			}
+		}
+		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
 
-		int[] arr3 = {13, 21, 11, 52, 62, 3, 113};
-		radixSort(arr3);
-		System.out.println(Arrays.toString(arr3));
+		int[] arr = generateRandomArray(maxSize, maxValue);
+		printArray(arr);
+		radixSort(arr);
+		printArray(arr);
 
 	}
 
