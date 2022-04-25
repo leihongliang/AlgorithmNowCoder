@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Code03_TreeMaxWidth {
+public class Code03_TreeMaxWidth_A {
 
 	public static class Node {
 		public int value;
@@ -25,18 +25,18 @@ public class Code03_TreeMaxWidth {
 		queue.add(head);
 		HashMap<Node, Integer> levelMap = new HashMap<>();
 		levelMap.put(head, 1);
-		int curLevel = 1;
-		int curLevelNodes = 0;
+		int curLevel = 1;// 当前所在层，对比用
+		int curLevelNodes = 0;// 当前层宽度
 		int max = Integer.MIN_VALUE;
 		while(!queue.isEmpty()) {
 			Node cur = queue.poll();
-			int curNodeLevel = levelMap.get(cur);
-			if(curNodeLevel == curLevel) {
-				curLevelNodes++;
+			int curNodeLevel = levelMap.get(cur);// 当前节点所在层
+			if(curNodeLevel == curLevel) {//判断是否应该去下一层
+				curLevelNodes++;// 宽度计数器
 			} else {
 				max = Math.max(max, curLevelNodes);
 				curLevel++;
-				curLevelNodes = 1;
+				curLevelNodes = 1;//宽度置0
 			}
 			if(cur.left !=null) {
 				levelMap.put(cur.left, curNodeLevel+1);
@@ -91,7 +91,16 @@ public class Code03_TreeMaxWidth {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		Node head = new Node(1);
+		head = new Node(1);
+		head.left = new Node(2);
+		head.right = new Node(3);
+		head.left.left = new Node(4);
+		head.left.right = new Node(5);
+		head.left.right.left = new Node(7);
+		head.right.left= new Node(6);
+		head.right.left.right= new Node(8);
+		System.out.println(w(head));
 	}
 
 }
